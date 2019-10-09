@@ -41,7 +41,7 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
      * Performs a task supplying E and runs result with the supplied value
      */
 
-    public BackgroundRunner(ThrowingSupplier<E> task, ThrowingConsumer<E> result, Consumer<Exception> exceptionConsumer)
+    public BackgroundRunner(ThrowingSupplier<E> task, ThrowingConsumer<E> result, ThrowingConsumer<Exception> exceptionConsumer)
     {
         this.task = task;
         this.result = result;
