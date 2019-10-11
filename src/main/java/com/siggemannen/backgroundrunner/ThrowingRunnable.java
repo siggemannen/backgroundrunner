@@ -1,4 +1,4 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
 /**
  * A runnable that can throw exceptions

@@ -1,4 +1,4 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -8,6 +8,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.siggemannen.backgroundrunner.BackgroundRunner;
 
 /**
  * To verify {@link BackgroundRunner}

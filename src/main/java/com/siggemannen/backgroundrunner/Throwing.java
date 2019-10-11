@@ -1,4 +1,4 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
 /**
  * Sneaky throwing class to handle exceptions in non-exception interfaces (like Runnable, Supplier)

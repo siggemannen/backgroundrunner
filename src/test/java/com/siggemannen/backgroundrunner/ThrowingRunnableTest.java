@@ -1,6 +1,8 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
 import org.junit.Test;
+
+import com.siggemannen.backgroundrunner.ThrowingRunnable;
 
 /**
  * Verifies {@link ThrowingRunnable}

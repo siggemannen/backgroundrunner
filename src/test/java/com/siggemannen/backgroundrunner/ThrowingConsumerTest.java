@@ -1,8 +1,10 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
 import java.util.function.Consumer;
 
 import org.junit.Test;
+
+import com.siggemannen.backgroundrunner.ThrowingConsumer;
 
 /**
  * Verifies {@link ThrowingConsumer}

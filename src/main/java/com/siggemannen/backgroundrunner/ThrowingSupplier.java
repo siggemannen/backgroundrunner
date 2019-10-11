@@ -1,4 +1,4 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
 import java.util.function.Supplier;
 

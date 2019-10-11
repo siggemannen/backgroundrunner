@@ -1,8 +1,10 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
 import java.util.function.Supplier;
 
 import org.junit.Test;
+
+import com.siggemannen.backgroundrunner.ThrowingSupplier;
 
 /**
  * Verifies {@link ThrowingSupplier}

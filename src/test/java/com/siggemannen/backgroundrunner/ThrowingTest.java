@@ -1,8 +1,10 @@
-package com.sigge.backgroundrunner;
+package com.siggemannen.backgroundrunner;
 
-import static com.sigge.backgroundrunner.Throwing.sneakyThrow;
+import static com.siggemannen.backgroundrunner.Throwing.sneakyThrow;
 
 import org.junit.Test;
+
+import com.siggemannen.backgroundrunner.Throwing;
 
 /**
  * Verifies {@link Throwing}
