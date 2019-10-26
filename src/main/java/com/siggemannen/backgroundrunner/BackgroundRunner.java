@@ -11,6 +11,7 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
     private final Supplier<E> task;
     private final Consumer<E> result;
     private final Consumer<Exception> exceptionConsumer;
+    boolean triggeredExceptionInSupplier;
 
     /**
      * Performs a task supplying E and runs result with the supplied value task might throw an exception
@@ -38,6 +39,18 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
     }
 
     /**
+     * Create a runner and perform a task that doesn't supply a return value Runnable might throw exception
+     */
+    public BackgroundRunner(ThrowingRunnable runnable, ThrowingConsumer<Exception> exceptionConsumer)
+    {
+        this(() ->
+        {
+            runnable.run();
+            return null;
+        }, null, exceptionConsumer);
+    }
+
+    /**
      * Performs a task supplying E and runs result with the supplied value
      */
 
@@ -46,12 +59,29 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
         this.task = task;
         this.result = result;
         this.exceptionConsumer = exceptionConsumer;
+
     }
 
     @Override
     protected E doInBackground() throws Exception
     {
-        return task.get();
+        try
+        {
+            return task.get();
+        }
+        catch (Exception e)
+        {
+            if (exceptionConsumer != null)
+            {
+                triggeredExceptionInSupplier = true;
+                exceptionConsumer.accept(e);
+            }
+            else
+            {
+                throw e;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -59,7 +89,7 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
     {
         try
         {
-            if (result != null)
+            if (result != null && !triggeredExceptionInSupplier)
             {
                 result.accept(get());
             }

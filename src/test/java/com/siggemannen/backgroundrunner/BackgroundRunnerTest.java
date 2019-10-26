@@ -9,8 +9,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.siggemannen.backgroundrunner.BackgroundRunner;
-
 /**
  * To verify {@link BackgroundRunner}
  */
@@ -89,7 +87,7 @@ public class BackgroundRunnerTest
         //We expect our result be null
         assertEquals("Our result should also be consumed", null, this.result);
         //We expect exception to be consumed
-        assertTrue("Our exception consumer should not have been called", e != null);
+        assertTrue("Our exception consumer should have been called", e != null);
     }
     
     @Test
