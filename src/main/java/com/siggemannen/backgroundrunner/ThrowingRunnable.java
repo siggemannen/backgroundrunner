@@ -5,7 +5,15 @@ package com.siggemannen.backgroundrunner;
  */
 public interface ThrowingRunnable extends Runnable
 {
+    /**
+     * This is the actual method that performs work and should be overridden
+     * @throws Throwable exception that is thrown
+     */
+    void run0() throws Throwable;
 
+    /**
+     * Overrides {@link Runnable#run()} to be able to handle the exceptions in <code>run0</code>
+     */
     @Override
     default void run()
     {
@@ -17,9 +25,5 @@ public interface ThrowingRunnable extends Runnable
         {
             Throwing.sneakyThrow(ex);
         }
-
     }
-
-    void run0() throws Throwable;
-
 }

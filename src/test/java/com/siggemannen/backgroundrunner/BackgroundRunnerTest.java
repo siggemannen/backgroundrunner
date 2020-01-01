@@ -99,9 +99,45 @@ public class BackgroundRunnerTest
         //We expect our result be null
         assertEquals("Our result should not be consumed", null, this.result);
         //We expect exception to be consumed
-        assertTrue("Our exception consumer should not have been called", e != null);
+        assertTrue("Our exception consumer should have been called", e != null);
+    }
+    
+    @Test
+    public void test_runner_runnable_and_exception_consumer() throws InterruptedException
+    {
+        BackgroundRunner<String> br = new BackgroundRunner<>(this::throwing_supplier, this::consume_exception);
+        br.execute();
+        Thread.sleep(200);
+        //We expect our result be null
+        assertEquals("Our result should not be consumed", null, this.result);
+        //We expect exception to be consumed
+        assertTrue("Our exception consumer should have been called", e != null);
     }
 
+    @Test
+    public void test_runner_runnable_and_exception_consumer_no_exceptions() throws InterruptedException
+    {
+        BackgroundRunner<String> br = new BackgroundRunner<>(this::supply_method, this::consume_exception);
+        br.execute();
+        Thread.sleep(200);
+        //We expect our result be null
+        assertEquals("Our result should not be consumed cause we have no consumer", null, this.result);
+        //We expect exception to be consumed
+        assertTrue("Our exception consumer should not have been called", e == null);
+    }
+    
+    @Test
+    public void test_result_consumer_throws_exception_that_should_be_accepted() throws InterruptedException
+    {
+        BackgroundRunner<String> br = new BackgroundRunner<>(this::supply_method, this::consume_result_method_failure, this::consume_exception);
+        br.execute();
+        Thread.sleep(200);
+        //We expect our result be null
+        assertEquals("Our result should not be consumed", null, this.result);
+        //We expect exception to be consumed
+        assertTrue("Our exception consumer should have been called", e != null);
+    }
+    
     public void consume_exception(Exception e)
     {
         this.e = e;

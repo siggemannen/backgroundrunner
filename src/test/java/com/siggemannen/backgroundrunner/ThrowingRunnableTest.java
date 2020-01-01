@@ -2,8 +2,6 @@ package com.siggemannen.backgroundrunner;
 
 import org.junit.Test;
 
-import com.siggemannen.backgroundrunner.ThrowingRunnable;
-
 /**
  * Verifies {@link ThrowingRunnable}
  */
@@ -21,6 +19,18 @@ public class ThrowingRunnableTest
     {
         Runnable tr = new OKThrowingRunnable();
         tr.run();
+    }
+    
+    @Test(expected=Exception.class)
+    public void test_throwing_runnable()
+    {
+        ThrowingRunnable tr = this::runThis;
+        tr.run();
+    }
+    
+    private void runThis() throws Exception
+    {
+        throw new Exception();
     }
     
     class FailureThrowingRunnable implements ThrowingRunnable

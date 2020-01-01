@@ -4,8 +4,6 @@ import static com.siggemannen.backgroundrunner.Throwing.sneakyThrow;
 
 import org.junit.Test;
 
-import com.siggemannen.backgroundrunner.Throwing;
-
 /**
  * Verifies {@link Throwing}
  */
@@ -22,5 +20,10 @@ public class ThrowingTest
     {
         sneakyThrow(new RuntimeException());
     }
-
+    
+    @Test
+    public void test_throwing_clazz() throws Exception
+    {
+        TestClassUtils.assertUtilityClassWellDefined(Throwing.class);
+    }
 }

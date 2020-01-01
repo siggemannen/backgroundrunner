@@ -4,8 +4,6 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
-import com.siggemannen.backgroundrunner.ThrowingSupplier;
-
 /**
  * Verifies {@link ThrowingSupplier}
  */
@@ -26,6 +24,18 @@ public class ThrowingSupplierTest
         s.get();
     }
     
+    @Test(expected=Exception.class)
+    public void test_throwing_supplier_throws_method_error()
+    {
+        ThrowingSupplier<String> s = this::throwingSupplierMethod;
+        s.get();
+    }
+    
+    private String throwingSupplierMethod() throws Exception
+    {
+        throw new Exception();
+    }
+    
     class FailureThrowingSupplier<E> implements ThrowingSupplier<E>
     {
         @Override
@@ -43,5 +53,4 @@ public class ThrowingSupplierTest
             return null;
         }
     }
-
 }

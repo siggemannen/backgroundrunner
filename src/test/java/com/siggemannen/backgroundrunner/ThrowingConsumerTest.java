@@ -4,8 +4,6 @@ import java.util.function.Consumer;
 
 import org.junit.Test;
 
-import com.siggemannen.backgroundrunner.ThrowingConsumer;
-
 /**
  * Verifies {@link ThrowingConsumer}
  */
@@ -24,10 +22,21 @@ public class ThrowingConsumerTest
         Consumer<String> tc = new OKThrowingConsumer<>();
         tc.accept("testOK");
     }
+    
+    @Test(expected=Exception.class)
+    public void test_accept_exception_exception()
+    {
+        ThrowingConsumer<String> tc = this::consume;
+        tc.accept("test");
+    }
+    
+    private void consume(String string) throws Exception
+    {
+        throw new Exception(string);
+    }
 
     class FailureThrowingConsumer<E> implements ThrowingConsumer<E>
     {
-
         @Override
         public void accept0(E e) throws Throwable
         {

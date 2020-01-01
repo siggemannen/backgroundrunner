@@ -39,7 +39,9 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
     }
 
     /**
-     * Create a runner and perform a task that doesn't supply a return value Runnable might throw exception
+     * Create a runner and perform a task that doesn't supply a return value
+     * @param runnable Runnable to run that might throw exception
+     * @param exceptionConsumer consumes exception occurred in the runnable
      */
     public BackgroundRunner(ThrowingRunnable runnable, ThrowingConsumer<Exception> exceptionConsumer)
     {
