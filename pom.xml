@@ -13,15 +13,21 @@
         </license>
     </licenses>
     <scm>
-    <url>https://github.com/siggemannen/backgroundrunner</url>
+        <url>https://github.com/siggemannen/backgroundrunner</url>
     </scm>
-  
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.siggemannen</groupId>
+            <artifactId>functional</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

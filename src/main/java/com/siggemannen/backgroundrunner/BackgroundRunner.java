@@ -5,6 +5,10 @@ import java.util.function.Supplier;
 
 import javax.swing.SwingWorker;
 
+import com.siggemannen.functional.throwing.ThrowingConsumer;
+import com.siggemannen.functional.throwing.ThrowingRunnable;
+import com.siggemannen.functional.throwing.ThrowingSupplier;
+
 public class BackgroundRunner<E> extends SwingWorker<E, Object>
 {
 
