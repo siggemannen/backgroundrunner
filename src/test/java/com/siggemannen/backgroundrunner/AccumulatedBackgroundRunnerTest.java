@@ -83,9 +83,9 @@ public class AccumulatedBackgroundRunnerTest
         for (int i = 0; i<1000; i++)
         {
             AccumulatedBackgroundRunner.schedule("test" + (int)(random() * 5), i % 3 == 0 ? rhe : rd, 100 * (int)(random() * 5 - 1), TimeUnit.MILLISECONDS);
-            sleep(100 * (int)(random() * 2 - 1));
+            sleep(5);
         }
-        sleep(500);
+        sleep((int)(random() * 3));
         assertTrue("We expected total run to be at least 100 for " + rd.hasRun + " and " + rhe.hasRun, rd.hasRun + rhe.hasRun > 100);
     }
 
