@@ -1,22 +1,29 @@
 package com.siggemannen.backgroundrunner;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import javax.swing.SwingWorker;
 
 import com.siggemannen.functional.throwing.ThrowingConsumer;
 import com.siggemannen.functional.throwing.ThrowingRunnable;
 import com.siggemannen.functional.throwing.ThrowingSupplier;
 
-public class BackgroundRunner<E> extends SwingWorker<E, Object>
+/**
+ * Performs a task in a background thread and returns result on AWT thread
+ */
+public class BackgroundRunner<E>
 {
-
     private final Supplier<E> task;
     private final Consumer<E> result;
     private final Consumer<Exception> exceptionConsumer;
     boolean triggeredExceptionInSupplier;
-
+    private final static ExecutorService EXECUTOR = Executors.newCachedThreadPool();
+    private E computation;
+    private Future<E> future;
+    
     /**
      * Performs a task supplying E and runs result with the supplied value task might throw an exception
      */
@@ -57,6 +64,19 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
     }
 
     /**
+     * Create a runner and perform a task that doesn't supply a return value
+     * @param runnable Runnable to run that might throw exception
+     * @param exceptionConsumer consumes exception occurred in the runnable
+     */
+    public BackgroundRunner(ThrowingRunnable runnable, ThrowingRunnable callback, ThrowingConsumer<Exception> exceptionConsumer)
+    {
+        this(() ->
+        {
+            runnable.run();
+            return null;
+        }, e -> callback.run(), exceptionConsumer);
+    }
+    /**
      * Performs a task supplying E and runs result with the supplied value
      */
 
@@ -65,15 +85,39 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
         this.task = task;
         this.result = result;
         this.exceptionConsumer = exceptionConsumer;
-
     }
-
-    @Override
-    protected E doInBackground() throws Exception
+    
+    /**
+     * Cancels currently running task
+     * @return
+     */
+    public boolean cancel()
+    {
+        if (future != null)
+        {
+            try{
+                return future.cancel(true);
+            }
+            catch (Exception e)
+            {
+                
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Submits execution to run in a new thread
+     */
+    public void execute()
+    {
+        future = EXECUTOR.submit(this::doInBackground);
+    }
+    public E doInBackground()
     {
         try
         {
-            return task.get();
+            computation = task.get();
         }
         catch (Exception e)
         {
@@ -84,20 +128,15 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
             }
             else
             {
+                e.printStackTrace();
                 throw e;
             }
         }
-        return null;
-    }
-
-    @Override
-    protected void done()
-    {
         try
         {
             if (result != null && !triggeredExceptionInSupplier)
             {
-                result.accept(get());
+                result.accept(computation);
             }
         }
         catch (Exception e)
@@ -106,7 +145,17 @@ public class BackgroundRunner<E> extends SwingWorker<E, Object>
             {
                 exceptionConsumer.accept(e);
             }
+            e.printStackTrace();
         }
+        return computation;
     }
-
+    
+    public E get() throws InterruptedException, ExecutionException
+    {
+        if (future != null)
+        {
+            return future.get();
+        }
+        return null;
+    }
 }

@@ -15,7 +15,7 @@ import com.siggemannen.functional.throwing.ThrowingRunnable;
 public final class AccumulatedBackgroundRunner
 {
     private static final Map<String, ScheduledFuture> JOB_MAP = new Hashtable<>();
-    private static final ScheduledExecutorService THREAD_POOL = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService THREAD_POOL = Executors.newScheduledThreadPool(5);
 
     private AccumulatedBackgroundRunner()
     {
@@ -23,7 +23,7 @@ public final class AccumulatedBackgroundRunner
 
     /**
      * Schedules a task to perform after a certain delay. If there exists a task on schedule, cancel it, since new task supersedes it
-     * 
+     *
      * @param taskId identifier of the task "group" for which we will replace existing task with a new incoming one
      * @param runnable runnable to run
      * @param delay delay until task will fire
@@ -45,15 +45,22 @@ public final class AccumulatedBackgroundRunner
 
     private static void runAndRemoveFromSchedule(String taskId, ThrowingRunnable r)
     {
+        String name = Thread.currentThread().getName();
+        //Set thread name to taskId so we know what we're doing
+
+        if (name == null || !name.contains(taskId))
+        {
+            Thread.currentThread().setName(name + ", executing: " + taskId);
+        }
         try
         {
-            //Set thread name to taskId so we know what we're doing
-            Thread.currentThread().setName(Thread.currentThread().getName() + ", executing: " + taskId);
             r.run();
         }
         finally
         {
             JOB_MAP.remove(taskId);
+            //restore name
+            Thread.currentThread().setName(name);
         }
     }
 }

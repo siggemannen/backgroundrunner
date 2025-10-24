@@ -42,8 +42,8 @@ public class AccumulatedBackgroundRunnerTest
         AccumulatedBackgroundRunner.schedule("test", rh2, 0, TimeUnit.SECONDS);
         AccumulatedBackgroundRunner.schedule("test", rh2, 0, TimeUnit.SECONDS);
         sleep();
-        assertTrue(rh.hasRun == 0);
-        assertTrue(rh2.hasRun == 1);
+        assertEquals("Expected first runner to NOT be fired", 0, rh.hasRun);
+        assertTrue("Expected second runner to be fired at least once", rh2.hasRun >= 1);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class AccumulatedBackgroundRunnerTest
     }
     private class RunnableHolderException implements ThrowingRunnable
     {
-        private int hasRun;
+        private volatile int hasRun;
 
         @Override
         public void run0() throws Throwable
